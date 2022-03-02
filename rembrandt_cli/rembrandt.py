@@ -34,3 +34,7 @@ class Client:
         '''
         self.websocket.send(data)
         return self.websocket.recv()
+
+    def logout(self):
+        self.websocket.send({"action":"logout"})
+        return self.websocket.recv()
