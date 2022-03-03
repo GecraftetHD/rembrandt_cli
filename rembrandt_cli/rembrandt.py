@@ -38,3 +38,24 @@ class Client:
     def logout(self):
         self.websocket.send({"action":"logout"})
         return self.websocket.recv()
+
+    def change_password(self):
+        data = '''
+        {
+            "action":"password",
+            "name":"<username [string]>",
+            "password":"<old password [string]>",
+            "new":"<new password [string]>",
+        }
+        '''
+
+        pass
+
+    def register_account(self):
+        pass
+
+    def info(self):
+        pass
+
+    def delete_account(self):
+        pass
