@@ -108,7 +108,8 @@ class Client:
             }
             '''
             self.websocket.send(data)
-            response = self.websocket.recv()
+            raw_response = self.websocket.recv()
+            response = json.loads(raw_response)
             return response
 
     def delete_account(self):
@@ -121,5 +122,6 @@ class Client:
             }
             '''
             self.websocket.send(data)
-            response = self.websocket.recv()
+            raw_response = self.websocket.recv()
+            response = json.loads(raw_response)
             return response
