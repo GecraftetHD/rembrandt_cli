@@ -5,4 +5,7 @@ load_dotenv()
 
 client = Client('wss://ws.cryptic-game.net:443/')
 print(client.status())
-client.login(os.getenv('USERNAME'), os.getenv('PASSWORD'))
+#print(client.register_account('allah579123', 'Testblyat123_'))
+print(client.login('allah579123', 'Testblyat123_'))
+print(client.info())
+print(client.logout())

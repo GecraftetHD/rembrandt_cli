@@ -4,7 +4,7 @@ import websockets
 import os
 import json
 import websocket
-import exceptions
+import rembrandt_cli.exceptions
 
 
 
@@ -37,8 +37,14 @@ class Client:
         return self.websocket.recv()
 
     def logout(self):
-        self.websocket.send({"action":"logout"})
-        return self.websocket.recv()
+        data = '''
+        {
+            "action":"logout"
+        }
+        '''
+        self.websocket.send(data)
+        response = self.websocket.recv()
+        return response
 
     def change_password(self, username, old_password, new_password):
         data = f'''
@@ -52,8 +58,7 @@ class Client:
         self.websocket.send(data)
         response = self.websocket.recv()
         if 'error' in response:
-            raise exceptions.Error
-            return "Error"
+            raise rembrandt_cli.exceptions.BasicError
         else:
             return "success"
 
@@ -66,16 +71,24 @@ class Client:
         }}
         '''
         self.websocket.send(data)
-        response = self.websocket.recv()
+        raw_response = self.websocket.recv()
+        response = json.loads(raw_response)
         if 'error' in response:
-            raise exceptions.Error
-            return 'Error'
+
+            error = response["error"]
+            if error == 'missing parameters':
+                raise rembrandt_cli.exceptions.MissingParametersError
+            elif error == "invalid password":
+                raise rembrandt_cli.exceptions.PasswordRequirementsError
+            elif error == 'username already exists':
+                raise rembrandt_cli.exceptions.UsernameAlreadyExistsError
+
         else:
-            return 'success'
+            return response
 
     def info(self):
         if not self.logged_in == True:
-            raise exceptions.Error
+            raise rembrandt_cli.exceptions.NotLoggedInError
         else:
             data = '''
             {
@@ -88,7 +101,7 @@ class Client:
 
     def delete_account(self):
         if not self.logged_in == True:
-            raise exceptions.Error
+            raise rembrandt_cli.exceptions.NotLoggedInError
         else:
             data = '''
             {
