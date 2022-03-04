@@ -31,6 +31,7 @@ class Client:
             elif error == 'permissions denied':
                 raise rembrandt_cli.exceptions.PermissionDeniedError
         else:
+            self.logged_in = True
             return response
 
     def status(self):
