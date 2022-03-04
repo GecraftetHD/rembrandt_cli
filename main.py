@@ -1,5 +1,4 @@
 import os
-
 from rembrandt_cli.rembrandt import Client
 from dotenv import load_dotenv
 load_dotenv()
