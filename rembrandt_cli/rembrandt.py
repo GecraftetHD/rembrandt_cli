@@ -1,7 +1,3 @@
-import asyncio
-
-import websockets
-import os
 import json
 import websocket
 import rembrandt_cli.exceptions
