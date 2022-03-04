@@ -56,11 +56,17 @@ class Client:
         }}
         '''
         self.websocket.send(data)
-        response = self.websocket.recv()
+        raw_response = self.websocket.recv()
+        response = json.loads(raw_response)
         if 'error' in response:
-            raise rembrandt_cli.exceptions.BasicError
+            error = response['error']
+            if error == 'missing parameters':
+                raise rembrandt_cli.exceptions.MissingParametersError
+            elif error == 'permission denied':
+                raise rembrandt_cli.exceptions.PermissionDeniedError
+
         else:
-            return "success"
+            return response
 
     def register_account(self, username, password):
         data = f'''
@@ -74,7 +80,6 @@ class Client:
         raw_response = self.websocket.recv()
         response = json.loads(raw_response)
         if 'error' in response:
-
             error = response["error"]
             if error == 'missing parameters':
                 raise rembrandt_cli.exceptions.MissingParametersError

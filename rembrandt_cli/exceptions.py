@@ -22,3 +22,6 @@ class MissingParametersError(Error):
 
 class UsernameAlreadyExistsError(Error):
     pass
+
+class PermissionDeniedError(Error):
+    pass
