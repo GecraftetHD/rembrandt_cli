@@ -7,7 +7,6 @@ import websocket
 import rembrandt_cli.exceptions
 
 
-
 class Client:
     def __init__(self, server: str):
         self.logged_in = False
@@ -41,7 +40,9 @@ class Client:
         }
         '''
         self.websocket.send(data)
-        return self.websocket.recv()
+        raw_response = self.websocket.recv()
+        response = json.loads(raw_response)
+        return response
 
     def logout(self):
         data = '''
@@ -50,7 +51,8 @@ class Client:
         }
         '''
         self.websocket.send(data)
-        response = self.websocket.recv()
+        raw_response = self.websocket.recv()
+        response = json.loads(raw_response)
         return response
 
     def change_password(self, username, old_password, new_password):
