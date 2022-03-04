@@ -23,9 +23,16 @@ class Client:
         }}
         '''
         self.websocket.send(data)
-        token = self.websocket.recv()
-        self.logged_in = True
-        return token
+        raw_response = self.websocket.recv()
+        response = json.loads(raw_response)
+        if 'error' in raw_response:
+            error = response['error']
+            if error == 'missing parameters':
+                raise rembrandt_cli.exceptions.MissingParametersError
+            elif error == 'permissions denied':
+                raise rembrandt_cli.exceptions.PermissionDeniedError
+        else:
+            return response
 
     def status(self):
         data = '''
