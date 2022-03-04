@@ -4,6 +4,7 @@ import websockets
 import os
 import json
 import websocket
+import exceptions
 
 
 
@@ -48,13 +49,52 @@ class Client:
             "new":"{new_password}",
         }}
         '''
+        self.websocket.send(data)
+        response = self.websocket.recv()
+        if 'error' in response:
+            raise exceptions.Error
+            return "Error"
+        else:
+            return "success"
 
-
-    def register_account(self):
-        pass
+    def register_account(self, username, password):
+        data = f'''
+        {{
+            "action":"register",
+            "name":"{username}",
+            "password":"{password}"
+        }}
+        '''
+        self.websocket.send(data)
+        response = self.websocket.recv()
+        if 'error' in response:
+            raise exceptions.Error
+            return 'Error'
+        else:
+            return 'success'
 
     def info(self):
-        pass
+        if not self.logged_in == True:
+            raise exceptions.Error
+        else:
+            data = '''
+            {
+                "action":"info"
+            }
+            '''
+            self.websocket.send(data)
+            response = self.websocket.recv()
+            return response
 
     def delete_account(self):
-        pass
+        if not self.logged_in == True:
+            raise exceptions.Error
+        else:
+            data = '''
+            {
+                "action":"delete"
+            }
+            '''
+            self.websocket.send(data)
+            response = self.websocket.recv()
+            return response
