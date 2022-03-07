@@ -11,7 +11,7 @@ setup(
     description='cryptic game client and library',
     entrypoints={
         'console_scripts': [
-            'rembrandt = rembrandt_cli.rembrandt.rembrandt:main',
+            'rembrandt = rembrandt_cli.rembrandt:main',
         ]
     }
 )

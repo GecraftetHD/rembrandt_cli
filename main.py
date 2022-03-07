@@ -1,7 +1,5 @@
-import os
-
 import rembrandt_cli.models.device
-from rembrandt_cli.rembrandt import Client
+from rembrandt_cli.client import Client
 from dotenv import load_dotenv
 load_dotenv()
 

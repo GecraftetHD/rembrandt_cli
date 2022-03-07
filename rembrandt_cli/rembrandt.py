@@ -1,8 +1,6 @@
-import json
-import websocket
-import rembrandt_cli.exceptions
-import sys
 
+import sys
+import commands.handler as cmd
 def frontend():
     while True:
         command = input("$ ")
@@ -13,7 +11,7 @@ def frontend():
                   " -help | list all commands\n"
                   " -exit | stops the client\n")
         else:
-            print(command)
+            cmd.command_func(command)
 
 def main():
     args = sys.argv[1:]
